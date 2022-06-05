@@ -234,7 +234,7 @@ st.markdown("### Sample: Recent Clothing Review Sentiment in Amazon.com")
 url = "https://www.amazon.com/Bsubseach-Sleeve-Blouses-Bathing-Swimwear/product-reviews/B087CNRPF9/ref=cm_cr_arp_d_viewopt_srt?ie=UTF8&reviewerType=all_reviews&sortBy=recent&pageNumber=1"
 
 ran_df = get_reviews(url)
-st.table(ran_df)
+st.dataframe(ran_df)
 st.markdown("&nbsp;")
 
 st.markdown("#### Finding Clues of Positive Reviews : Strengths of the Product")
@@ -251,7 +251,7 @@ option = st.selectbox("Choose Department", ("Select One", "Women's Clothing", "M
 if option == "Women's Clothing":
     w_url = "https://www.amazon.com/Levis-Womens-501-Original-Shorts/product-reviews/B09RQTMLXP/ref=cm_cr_arp_d_viewopt_srt?ie=UTF8&reviewerType=all_reviews&sortBy=recent&pageNumber=1"
     w_df = get_reviews(w_url)
-    st.table(w_df)
+    st.dataframe(w_df)
     st.markdown("&nbsp;")
     st.markdown("#### Finding Clues of Positive Reviews : Strengths of the Product")
     positive_plot(w_df)
@@ -262,7 +262,7 @@ if option == "Women's Clothing":
 if option == "Men's Clothing":
     m_url = "https://www.amazon.com/Fruit-Loom-Eversoft-Cotton-T-Shirt/product-reviews/B0B2WV23RL/ref=cm_cr_arp_d_viewopt_srt?ie=UTF8&reviewerType=all_reviews&sortBy=recent&pageNumber=1"
     m_df = get_reviews(m_url)
-    st.table(m_df)
+    st.dataframe(m_df)
     st.markdown("&nbsp;")
     st.markdown("#### Finding Clues of Positive Reviews : Strengths of the Product")
     positive_plot(m_df)
@@ -273,7 +273,7 @@ if option == "Men's Clothing":
 if option == "Girls' Clothing":
     s_url = "https://www.amazon.com/The-Childrens-Place-Girls-Leggings/product-reviews/B09XWRT6RK/ref=cm_cr_arp_d_viewopt_srt?ie=UTF8&reviewerType=all_reviews&sortBy=recent&pageNumber=1"
     s_df = get_reviews(s_url)
-    st.table(s_df)
+    st.dataframe(s_df)
     st.markdown("&nbsp;")
     st.markdown("#### Finding Clues of Positive Reviews : Strengths of the Product")
     positive_plot(s_df)
@@ -284,7 +284,7 @@ if option == "Girls' Clothing":
 if option == "Boys' Clothing":
     b_url = "https://www.amazon.com/Marvel-Avengers-Athletic-Shorts-Packs/product-reviews/B072WC6Y1G/ref=cm_cr_arp_d_viewopt_srt?ie=UTF8&reviewerType=all_reviews&sortBy=recent&pageNumber=1"
     b_df = get_reviews(b_url)
-    st.table(b_df)
+    st.dataframe(b_df)
     st.markdown("&nbsp;")
     st.markdown("#### Finding Clues of Positive Reviews : Strengths of the Product")
     positive_plot(b_df)
