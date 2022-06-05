@@ -193,6 +193,14 @@ def word_plot(noun_df, adj_df, adv_df, verb_df):
         axs[2].set(title='Adverb Word Frequency in Reviews', xlabel='Count', ylabel='Adverb Words in Reviews')
         sns.barplot(data=verb_df, x='Verb', y='index', ax=axs[3])
         axs[3].set(title='Verb Word Frequency in Reviews', xlabel='Count', ylabel='Verb Words in Reviews')
+    elif len(adj_df) == 0:
+        fig, axs = plt.subplots(1,3, figsize=(18, 25))
+        sns.barplot(data=noun_df, x='Noun', y='index', ax=axs[0])
+        axs[0].set(title='Noun Word Frequency in Reviews', xlabel='Count', ylabel='Noun Words in Reviews')
+        sns.barplot(data=adv_df, x='Comp_Adverb', y='index', ax=axs[1])
+        axs[1].set(title='Adverb Word Frequency in Reviews', xlabel='Count', ylabel='Adverb Words in Reviews')
+        sns.barplot(data=verb_df, x='Verb', y='index', ax=axs[2])
+        axs[2].set(title='Verb Word Frequency in Reviews', xlabel='Count', ylabel='Verb Words in Reviews')
     else:
         fig, axs = plt.subplots(1, 3, figsize=(18, 25))
         sns.barplot(data=noun_df, x='Noun', y='index', ax=axs[0])
