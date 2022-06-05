@@ -177,7 +177,7 @@ def pos_value_count(column):
     return noun_df, adj_df, adv_df, verb_df
 
 def word_plot(noun_df, adj_df, adv_df, verb_df):
-    sns.set(font_scale=1.5)
+    sns.set(font_scale=1.8)
     if len(adv_df) > 0:
         fig, axs = plt.subplots(1,4, figsize=(18, 25))
         sns.barplot(data=noun_df, x='Noun', y='index', ax=axs[0])
