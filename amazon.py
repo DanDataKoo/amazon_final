@@ -95,7 +95,7 @@ driver = webdriver.Chrome(options=options)
 
 def get_reviews(url):
     driver.get(url)
-    time.sleep(3)
+    time.sleep(10)
 
     page_source = driver.page_source
 
