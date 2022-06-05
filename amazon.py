@@ -169,16 +169,16 @@ def pos_value_count(column):
 
     noun_df = pd.DataFrame(noun_dict)
     noun_df = noun_df['Noun'].value_counts().reset_index()
-
+    st.dataframe(noun_df)
     adj_df = pd.DataFrame(adj_dict)
     adj_df = adj_df['Adjective'].value_counts().reset_index()
-
+    st.dataframe(adj_df)
     adv_df = pd.DataFrame(adv_dict)
     adv_df = adv_df['Comp_Adverb'].value_counts().reset_index()
-
+    st.dataframe(adv_df)
     verb_df = pd.DataFrame(verb_dict)
     verb_df = verb_df['Verb'].value_counts().reset_index()
-
+    st.dataframe(verb_df)
     return noun_df, adj_df, adv_df, verb_df
 
 def word_plot(noun_df, adj_df, adv_df, verb_df):
@@ -234,6 +234,7 @@ def positive_plot(df):
 def negative_plot(df):
     w_neg = df.loc[df['sentiment'] == 'negative']
     w_neg['review_cleaned'] = w_neg['review'].apply(lambda x: clean_text(x))
+    st.dataframe(w_neg)
     # POS tags for each word
     w_neg['review_pos'] = pos_tag_sents(w_neg['review_cleaned'].apply(word_tokenize).tolist())
     noun_df, adj_df, adv_df, verb_df = pos_value_count(w_neg['review_pos'])
