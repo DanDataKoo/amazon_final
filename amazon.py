@@ -97,30 +97,30 @@ def get_reviews(url):
         driver.get(url)
         time.sleep(2)
 
-    page_source = driver.page_source
+        page_source = driver.page_source
 
-    soup = BeautifulSoup(page_source, 'lxml')
-    reviews = soup.find_all('span', {'class': 'a-size-base review-text review-text-content'})
-    date = soup.find_all('span', {'class': 'a-size-base a-color-secondary review-date'})
-    time.sleep(1)
+        soup = BeautifulSoup(page_source, 'lxml')
+        reviews = soup.find_all('span', {'class': 'a-size-base review-text review-text-content'})
+        date = soup.find_all('span', {'class': 'a-size-base a-color-secondary review-date'})
+        time.sleep(1)
 
-    review_dict = {'review' : [], 'date': [], 'sentiment': [], 'sentiment_score': []}
-    for w in reviews:
-        target_str = w.text.strip()
-        review_dict['review'].append(target_str)
-        sent = predict_sentiment(target_str)
-        review_dict['sentiment_score'].append(sent)
-        if sent < 0.5:
-            review_dict['sentiment'].append('negative')
-        else:
-            review_dict['sentiment'].append('positive')
-    for c in date[2:]:
-        temp = c.text.strip()
-        date_final = temp.replace('Reviewed in the United States on ', '')
-        review_dict['date'].append(date_final)
+        review_dict = {'review' : [], 'date': [], 'sentiment': [], 'sentiment_score': []}
+        for w in reviews:
+            target_str = w.text.strip()
+            review_dict['review'].append(target_str)
+            sent = predict_sentiment(target_str)
+            review_dict['sentiment_score'].append(sent)
+            if sent < 0.5:
+                review_dict['sentiment'].append('negative')
+            else:
+                review_dict['sentiment'].append('positive')
+        for c in date[2:]:
+            temp = c.text.strip()
+            date_final = temp.replace('Reviewed in the United States on ', '')
+            review_dict['date'].append(date_final)
 
-    data = pd.DataFrame(review_dict)
-    return data
+        data = pd.DataFrame(review_dict)
+        return data
 
 # Pos Classification part
 
