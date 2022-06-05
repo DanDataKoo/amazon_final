@@ -94,14 +94,14 @@ driver = webdriver.Chrome(options=options)
 
 def get_reviews(url):
     driver.get(url)
-    time.sleep(2)
+    time.sleep(20)
 
     page_source = driver.page_source
 
     soup = BeautifulSoup(page_source, 'lxml')
     reviews = soup.find_all('span', {'class': 'a-size-base review-text review-text-content'})
     date = soup.find_all('span', {'class': 'a-size-base a-color-secondary review-date'})
-    time.sleep(1)
+    time.sleep(10)
 
     review_dict = {'review' : [], 'date': [], 'sentiment': [], 'sentiment_score': []}
     for w in reviews:
