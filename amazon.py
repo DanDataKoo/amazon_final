@@ -20,6 +20,7 @@ nltk.download('averaged_perceptron_tagger')
 nltk.download('stopwords')
 from keras.preprocessing.text import Tokenizer
 from keras_preprocessing.sequence import pad_sequences
+import lxml
 
 # Deep learning part
 model = load_model('apparel_reviews_200_test1.h5')
