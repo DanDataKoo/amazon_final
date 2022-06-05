@@ -223,7 +223,7 @@ def negative_plot(df):
 
 
 # Streamlit part
-st.title("Most Recent Customer Sentiment: Clothing Products in Amazon.com")
+st.title("Most Recent Customer Sentiment Analyzer in Real-Time: Clothing Products in Amazon.com")
 st.markdown("#### (Sentiment Analysis Done by a GRU Model, Deep Learning)")
 st.markdown("This app collects the most recent customer reviews on a few products and yields sentiment of each review using a GRU neural network model trainned with 1467106 apperal reviews in Amazon.com. It also then dissembles each review by part of speech and displays the frequency of important words to learn what made customer feel negative as well as positive about the product. Since this app is only for a learning and experiment purpose, it scrapes and analyzes only a few Amazon product pages real-time.")
 st.markdown("**However, any further development is possible including a sentiment search, a real-time product sentiment analyzer and a dashboard for all products in any online stores.** &nbsp;")
