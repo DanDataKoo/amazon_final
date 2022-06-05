@@ -109,7 +109,7 @@ def get_reviews(url):
     date = soup.find_all('span', {'class': 'a-size-base a-color-secondary review-date'})
     time.sleep(1)
 
-    review_dict = {'review' : [], 'date': [], 'sentiment': [], 'sentiment_score': []}
+    review_dict = {'sentiment': [], 'review' : [], 'date': [], 'sentiment_score': []}
     for w in reviews:
         target_str = w.text.strip()
         review_dict['review'].append(target_str)
