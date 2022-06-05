@@ -87,15 +87,20 @@ def predict_sentiment(word):
 # Scraping part
 
 options = webdriver.ChromeOptions()
-options.add_argument('--ignore-certificate-errors')
-options.add_argument('--incognito')
-options.add_argument('--headless')
+options.add_argument("--headless")
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")
+options.add_argument("--disable-gpu")
+options.add_argument("--disable-features=NetworkService")
+options.add_argument("--window-size=1920x1080")
+options.add_argument("--disable-features=VizDisplayCompositor")
+
 driver = webdriver.Chrome(options=options)
 
 def get_reviews(url):
     
     driver.get(url)
-    time.sleep(20)
+    time.sleep(5)
 
     page_source = driver.page_source
 
@@ -220,7 +225,9 @@ def negative_plot(df):
 # Streamlit part
 st.title("Most Recent Customer Sentiment: Clothing Products in Amazon.com")
 st.markdown("#### (Sentiment Analysis Done by a GRU Model, Deep Learning)")
-st.markdown("This app collects the most recent customer reviews on a few products and yields sentiment of each review using a GRU neural network model trainned with 1467106 apperal reviews in Amazon.com. It also then dissembles each review by part of speech and displays the frequency of important words to learn what made customer feel negative as well as positive about the product. Since this app is only for a learning and experiment purpose, it scrapes and analyze only a few Amazon product pages real-time. **However, any further development is possible including a sentiment search and a real-time product sentiment analyzer and dashboard for all products in any online stores.** &nbsp;")
+st.markdown("This app collects the most recent customer reviews on a few products and yields sentiment of each review using a GRU neural network model trainned with 1467106 apperal reviews in Amazon.com. It also then dissembles each review by part of speech and displays the frequency of important words to learn what made customer feel negative as well as positive about the product. Since this app is only for a learning and experiment purpose, it scrapes and analyze only a few Amazon product pages real-time.")
+st.markdown("**However, any further development is possible including a sentiment search and a real-time product sentiment analyzer and dashboard for all products in any online stores.** &nbsp;")
+st.markdown("*Each loading takes about 10 seconds, but it can be much faster than that if adjusted for a real application purpose.* &nbsp;")
 
 st.markdown("### Sample: Recent Clothing Review Sentiment in Amazon.com")
 
