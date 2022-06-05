@@ -90,12 +90,12 @@ options = webdriver.ChromeOptions()
 options.add_argument('--ignore-certificate-errors')
 options.add_argument('--incognito')
 options.add_argument('--headless')
-driver = webdriver.Chrome(options=options)
-
+# driver = webdriver.Chrome(options=options)
+driver = webdriver.Chrome("chromedriver", options=options)
 
 def get_reviews(url):
     driver.get(url)
-    time.sleep(10)
+    time.sleep(2)
 
     page_source = driver.page_source
 
