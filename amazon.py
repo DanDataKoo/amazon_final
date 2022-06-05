@@ -18,6 +18,7 @@ from nltk.tokenize import word_tokenize
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
 nltk.download('stopwords')
+nltk.download('wordnet')
 from keras.preprocessing.text import Tokenizer
 from keras_preprocessing.sequence import pad_sequences
 import lxml
