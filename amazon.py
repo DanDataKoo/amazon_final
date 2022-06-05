@@ -91,7 +91,6 @@ options.add_argument('--ignore-certificate-errors')
 options.add_argument('--incognito')
 options.add_argument('--headless')
 driver = webdriver.Chrome(options=options)
-# driver = webdriver.Chrome("chromedriver", options=options)
 
 def get_reviews(url):
     driver.get(url)
@@ -220,11 +219,12 @@ def negative_plot(df):
 # Streamlit part
 st.title("Most Recent Customer Sentiment: Clothing Products in Amazon.com")
 st.markdown("#### (Sentiment Analysis Done by a GRU Model, Deep Learning)")
-# st.markdown("This app collects the most recent customer reviews on a few products and yields sentiment of each review using a GRU neural network model trainned with 1467106 apperal reviews in Amazon.com. It also then dissembles each review by part of speech and displays the frequency of important words to learn what made customer feel negative as well as positive about the product. Since this app is only for a learning and experiment purpose, it scrapes and analyze only a few Amazon product pages real-time. However, any further development is possible including a sentiment search and a real-time product sentiment analyzer and dashboard for all products in any online stores. &nbsp;")
+st.markdown("This app collects the most recent customer reviews on a few products and yields sentiment of each review using a GRU neural network model trainned with 1467106 apperal reviews in Amazon.com. It also then dissembles each review by part of speech and displays the frequency of important words to learn what made customer feel negative as well as positive about the product. Since this app is only for a learning and experiment purpose, it scrapes and analyze only a few Amazon product pages real-time. **However, any further development is possible including a sentiment search and a real-time product sentiment analyzer and dashboard for all products in any online stores.** &nbsp;")
 
 st.markdown("### Sample: Recent Clothing Review Sentiment in Amazon.com")
-# url = "https://www.amazon.com/Bsubseach-Sleeve-Blouses-Bathing-Swimwear/product-reviews/B087CNRPF9/ref=cm_cr_arp_d_viewopt_srt?ie=UTF8&reviewerType=all_reviews&sortBy=recent&pageNumber=1"
-url = "https://www.amazon.com/Levis-Womens-501-Original-Shorts/product-reviews/B09RQTMLXP/ref=cm_cr_arp_d_viewopt_srt?ie=UTF8&reviewerType=all_reviews&sortBy=recent&pageNumber=1"
+
+url = "https://www.amazon.com/Bsubseach-Sleeve-Blouses-Bathing-Swimwear/product-reviews/B087CNRPF9/ref=cm_cr_arp_d_viewopt_srt?ie=UTF8&reviewerType=all_reviews&sortBy=recent&pageNumber=1"
+
 ran_df = get_reviews(url)
 st.table(ran_df)
 st.markdown("&nbsp;")
