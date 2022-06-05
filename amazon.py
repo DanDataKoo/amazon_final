@@ -120,7 +120,8 @@ def get_reviews(url):
         review_dict['date'].append(date_final)
 
     data = pd.DataFrame(review_dict)
-    return data
+    #return data
+    return page_source
 
 # Pos Classification part
 
@@ -225,9 +226,10 @@ st.markdown("This app collects the most recent customer reviews on a few product
 st.markdown("### Sample: Recent Clothing Review Sentiment in Amazon.com")
 
 url = "https://www.amazon.com/Bsubseach-Sleeve-Blouses-Bathing-Swimwear/product-reviews/B087CNRPF9/ref=cm_cr_arp_d_viewopt_srt?ie=UTF8&reviewerType=all_reviews&sortBy=recent&pageNumber=1"
-st.write(url)
+
 ran_df = get_reviews(url)
-st.table(ran_df)
+#st.table(ran_df)
+st.write(ran_df)
 st.markdown("&nbsp;")
 
 st.markdown("#### Finding Clues of Positive Reviews : Strengths of the Product")
