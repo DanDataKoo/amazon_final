@@ -90,10 +90,10 @@ options = webdriver.ChromeOptions()
 options.add_argument('--ignore-certificate-errors')
 options.add_argument('--incognito')
 options.add_argument('--headless')
-#driver = webdriver.Chrome(options=options)
+driver = webdriver.Chrome(options=options)
 
 def get_reviews(url):
-    driver = webdriver.Chrome(options=options)
+    
     driver.get(url)
     time.sleep(2)
 
@@ -225,7 +225,7 @@ st.markdown("This app collects the most recent customer reviews on a few product
 st.markdown("### Sample: Recent Clothing Review Sentiment in Amazon.com")
 
 url = "https://www.amazon.com/Bsubseach-Sleeve-Blouses-Bathing-Swimwear/product-reviews/B087CNRPF9/ref=cm_cr_arp_d_viewopt_srt?ie=UTF8&reviewerType=all_reviews&sortBy=recent&pageNumber=1"
-
+st.write(url)
 ran_df = get_reviews(url)
 st.table(ran_df)
 st.markdown("&nbsp;")
