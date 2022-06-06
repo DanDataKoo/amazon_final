@@ -11,18 +11,20 @@ from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
 import matplotlib.pyplot as plt
 import seaborn as sns
-from nltk.stem import WordNetLemmatizer
-from nltk.corpus import wordnet
-from nltk import pos_tag, pos_tag_sents
-from nltk.tokenize import word_tokenize
-nltk.download('punkt')
-nltk.download('averaged_perceptron_tagger')
+#from nltk.stem import WordNetLemmatizer
+#from nltk.corpus import wordnet
+#from nltk import pos_tag, pos_tag_sents
+#from nltk.tokenize import word_tokenize
+#nltk.download('punkt')
+#nltk.download('averaged_perceptron_tagger')
 nltk.download('stopwords')
-nltk.download('wordnet')
-nltk.download('omw-1.4')
+#nltk.download('wordnet')
+#nltk.download('omw-1.4')
 from keras.preprocessing.text import Tokenizer
 from keras_preprocessing.sequence import pad_sequences
 import lxml
+import spacy
+import spacy.cli
 
 # Deep learning part
 model = load_model('apparel_reviews_200_test1.h5')
@@ -72,7 +74,6 @@ def preprocess(content, stem=False):
     for token in content.split():
         if token not in english_stopwords:
             tokens.append(stemmer.stem(token))
-            # tokens.append(lemmatizer.lemmatize(token))
     return " ".join(tokens)
 
 
@@ -129,115 +130,99 @@ def get_reviews(url):
 
 # Pos Classification part
 
-def clean_text(content):
-    regex = "@\S+|https?:\S+|http?:\S|[^A-Za-z0-9]+"
-    nltk_stopwords = stopwords.words('english')
-    stemmer = SnowballStemmer('english')
+#download and load pretrained pos tagger
+spacy.cli.download("en_core_web_sm")
+nlp = spacy.load("en_core_web_sm")
 
-    content = re.sub(regex, ' ', str(content).lower()).strip()
-    tokens = []
-    for token in content.split():
-        if token not in nltk_stopwords:
-            # tokens.append(stemmer.stem(token))
-            tokens.append(token)
-    content = " ".join(tokens)
-    return content
+def pos_spacy(review):
+    line = [(w, w.pos_) for w in nlp(review)]
+    return line
 
-# data['review_cleaned'] = data['review'].apply(lambda x: clean_text(x))
-# data['review_pos'] = pos_tag_sents(data['review_cleaned'].apply(word_tokenize).tolist())
+def pos_value_count(df_column):
+    pos_dict = {"noun": [], "verb": [], "adjective": [], "adverb": []}
+    for tup in df_column:
+        for word, pos in tup:
+            if word.is_stop == False:
+                if pos == 'NOUN':
+                    lem = word.lemma_
+                    pos_dict['noun'].append(lem)
+                elif pos == 'VERB':
+                    lem = word.lemma_
+                    pos_dict['verb'].append(lem)
+                elif pos == 'ADJ':
+                    lem = word.lemma_
+                    pos_dict['adjective'].append(lem)
+                elif pos == 'ADV':
+                    lem = word.lemma_
+                    pos_dict['adverb'].append(lem)
 
+    noun_df = pd.DataFrame({'word' : pos_dict['noun']}).value_counts().reset_index()
+    noun_df = noun_df.rename({"word": "word", 0 : "count"}, axis=1)
+    
+    verb_df = pd.DataFrame({'word' : pos_dict['verb']}).value_counts().reset_index()
+    verb_df = verb_df.rename({"word": "word", 0 : "count"}, axis=1)
+    
+    adj_df = pd.DataFrame({'word' : pos_dict['adjective']}).value_counts().reset_index()
+    adj_df = adj_df.rename({"word": "word", 0 : "count"}, axis=1)
+    
+    adv_df = pd.DataFrame({'word' : pos_dict['adverb']}).value_counts().reset_index()
+    adv_df = adv_df.rename({"word": "word", 0 : "count"}, axis=1)
 
-def pos_value_count(column):
-    lemmatizer = WordNetLemmatizer()
-    pos_list = ['JJ', 'JJR', 'JJS', 'RBR', 'RBS', 'NN', 'NNS', 'VB', 'VBG', 'VBD', 'VBN', 'VBP', 'VBZ']
-
-    noun_dict = {'Noun': []}
-    adj_dict = {'Adjective': []}
-    adv_dict = {'Comp_Adverb': []}
-    verb_dict = {'Verb': []}
-    for line in column.tolist():
-        for word, pos in line:
-            if pos in pos_list:
-                if (pos == 'NN') or (pos == 'NNS'):
-                    noun_dict['Noun'].append(lemmatizer.lemmatize(word))
-                elif (pos == 'JJ') or (pos == 'JJR') or (pos == 'JJS'):
-                    adj_dict['Adjective'].append(lemmatizer.lemmatize(word))
-                elif (pos == 'RBR') or (pos == 'RBS'):
-                    adv_dict['Comp_Adverb'].append(lemmatizer.lemmatize(word))
-                else:
-                    verb_dict['Verb'].append(lemmatizer.lemmatize(word))
-
-    noun_df = pd.DataFrame(noun_dict)
-    noun_df = noun_df['Noun'].value_counts().reset_index()
-
-    adj_df = pd.DataFrame(adj_dict)
-    adj_df = adj_df['Adjective'].value_counts().reset_index()
-
-    adv_df = pd.DataFrame(adv_dict)
-    adv_df = adv_df['Comp_Adverb'].value_counts().reset_index()
-
-    verb_df = pd.DataFrame(verb_dict)
-    verb_df = verb_df['Verb'].value_counts().reset_index()
-
-    return noun_df, adj_df, adv_df, verb_df
+    return noun_df, verb_df, adj_df, adv_df
 
 def word_plot(noun_df, adj_df, adv_df, verb_df):
     sns.set(font_scale=1.8)
     if (len(adv_df) > 0) & (len(adj_df) > 0) & (len(verb_df) > 0):
         fig, axs = plt.subplots(1,4, figsize=(18, 25))
-        sns.barplot(data=noun_df, x='Noun', y='index', ax=axs[0])
+        sns.barplot(data=noun_df, x='count', y='word', ax=axs[0])
         axs[0].set(title='Noun Word Frequency in Reviews', xlabel='Count', ylabel='Noun Words in Reviews')
-        sns.barplot(data=adj_df, x='Adjective', y='index', ax=axs[1])
+        sns.barplot(data=adj_df, x='count', y='word', ax=axs[1])
         axs[1].set(title='Adjective Word Frequency in Reviews', xlabel='Count', ylabel='Adjective Words in Reviews')
-        sns.barplot(data=adv_df, x='Comp_Adverb', y='index', ax=axs[2])
+        sns.barplot(data=adv_df, x='count', y='word', ax=axs[2])
         axs[2].set(title='Adverb Word Frequency in Reviews', xlabel='Count', ylabel='Adverb Words in Reviews')
-        sns.barplot(data=verb_df, x='Verb', y='index', ax=axs[3])
+        sns.barplot(data=verb_df, x='count', y='word', ax=axs[3])
         axs[3].set(title='Verb Word Frequency in Reviews', xlabel='Count', ylabel='Verb Words in Reviews')
     elif (len(adv_df) > 0) & (len(adj_df) == 0) & (len(verb_df) > 0):
         fig, axs = plt.subplots(1,3, figsize=(18, 25))
-        sns.barplot(data=noun_df, x='Noun', y='index', ax=axs[0])
+        sns.barplot(data=noun_df, x='count', y='word', ax=axs[0])
         axs[0].set(title='Noun Word Frequency in Reviews', xlabel='Count', ylabel='Noun Words in Reviews')
-        sns.barplot(data=adv_df, x='Comp_Adverb', y='index', ax=axs[1])
+        sns.barplot(data=adv_df, x='count', y='word', ax=axs[1])
         axs[1].set(title='Adverb Word Frequency in Reviews', xlabel='Count', ylabel='Adverb Words in Reviews')
-        sns.barplot(data=verb_df, x='Verb', y='index', ax=axs[2])
+        sns.barplot(data=verb_df, x='count', y='word', ax=axs[2])
         axs[2].set(title='Verb Word Frequency in Reviews', xlabel='Count', ylabel='Verb Words in Reviews')
     elif (len(adv_df) == 0) & (len(adj_df) == 0) & (len(verb_df) > 0):
         fig, axs = plt.subplots(1, 2, figsize=(18, 25))
-        sns.barplot(data=noun_df, x='Noun', y='index', ax=axs[0])
+        sns.barplot(data=noun_df, x='count', y='word', ax=axs[0])
         axs[0].set(title='Noun Word Frequency in Reviews', xlabel='Count', ylabel='Noun Words in Reviews')
-        sns.barplot(data=verb_df, x='Verb', y='index', ax=axs[1])
+        sns.barplot(data=verb_df, x='count', y='word', ax=axs[1])
         axs[1].set(title='Verb Word Frequency in Reviews', xlabel='Count', ylabel='Verb Words in Reviews')
     elif (len(adv_df) == 0) & (len(adj_df) > 0) & (len(verb_df) > 0):
         fig, axs = plt.subplots(1, 3, figsize=(18, 25))
-        sns.barplot(data=noun_df, x='Noun', y='index', ax=axs[0])
+        sns.barplot(data=noun_df, x='count', y='word', ax=axs[0])
         axs[0].set(title='Noun Word Frequency in Reviews', xlabel='Count', ylabel='Noun Words in Reviews')
-        sns.barplot(data=adj_df, x='Adjective', y='index', ax=axs[1])
+        sns.barplot(data=adj_df, x='count', y='word', ax=axs[1])
         axs[1].set(title='Adjective Word Frequency in Reviews', xlabel='Count', ylabel='Adjective Words in Reviews')
-        sns.barplot(data=verb_df, x='Verb', y='index', ax=axs[2])
+        sns.barplot(data=verb_df, x='count', y='word', ax=axs[2])
         axs[2].set(title='Verb Word Frequency in Reviews', xlabel='Count', ylabel='Verb Words in Reviews')
     elif (len(adv_df) == 0) & (len(adj_df) == 0) & (len(verb_df) == 0):
         fig, axs = plt.subplots(figsize=(18, 25))
-        sns.barplot(data=noun_df, x='Noun', y='index', ax=axs)
+        sns.barplot(data=noun_df, x='count', y='word', ax=axs)
         axs.set(title='Noun Word Frequency in Reviews', xlabel='Count', ylabel='Noun Words in Reviews')
-        #fig.delaxes(axs[1][1])
     fig.tight_layout()
     return fig
 
 def positive_plot(df):
     w_posi = df.loc[df['sentiment'] == 'positive']
-    w_posi['review_cleaned'] = w_posi['review'].apply(lambda x: clean_text(x))
     # POS tags for each word
-    w_posi['review_pos'] = pos_tag_sents(w_posi['review_cleaned'].apply(word_tokenize).tolist())
-    noun_df, adj_df, adv_df, verb_df = pos_value_count(w_posi['review_pos'])
+    w_posi['review_pos'] = w_posi['review'].apply(lambda x: pos_spacy(x))
+    noun_df, verb_df, adj_df, adv_df = pos_value_count(w_posi['review_pos'])
     st.pyplot(word_plot(noun_df, adj_df, adv_df, verb_df))
 
 def negative_plot(df):
     w_neg = df.loc[df['sentiment'] == 'negative']
-    w_neg['review_cleaned'] = w_neg['review'].apply(lambda x: clean_text(x))
-
     # POS tags for each word
-    w_neg['review_pos'] = pos_tag_sents(w_neg['review_cleaned'].apply(word_tokenize).tolist())
-    noun_df, adj_df, adv_df, verb_df = pos_value_count(w_neg['review_pos'])
+    w_neg['review_pos'] = w_neg['review'].apply(lambda x: pos_spacy(x))
+    noun_df, verb_df, adj_df, adv_df = pos_value_count(w_neg['review_pos'])
     st.pyplot(word_plot(noun_df, adj_df, adv_df, verb_df))
 
 
