@@ -11,15 +11,7 @@ from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
 import matplotlib.pyplot as plt
 import seaborn as sns
-#from nltk.stem import WordNetLemmatizer
-#from nltk.corpus import wordnet
-#from nltk import pos_tag, pos_tag_sents
-#from nltk.tokenize import word_tokenize
-#nltk.download('punkt')
-#nltk.download('averaged_perceptron_tagger')
 nltk.download('stopwords')
-#nltk.download('wordnet')
-#nltk.download('omw-1.4')
 from keras.preprocessing.text import Tokenizer
 from keras_preprocessing.sequence import pad_sequences
 import lxml
@@ -51,11 +43,6 @@ exclude_stopw = [
 ]
 
 nltk.download('stopwords')
-
-# lemmatizer for testing only
-# nltk.download('wordnet')
-# nltk.download('omw-1.4')
-# lemmatizer = WordNetLemmatizer()
 
 nltk_stopwords = stopwords.words('english')
 
@@ -171,7 +158,7 @@ def pos_value_count(df_column):
     return noun_df, verb_df, adj_df, adv_df
 
 def word_plot(noun_df, adj_df, adv_df, verb_df):
-    sns.set(font_scale=1.8)
+    sns.set(font_scale=1.3)
     if (len(adv_df) > 0) & (len(adj_df) > 0) & (len(verb_df) > 0):
         fig, axs = plt.subplots(1,4, figsize=(18, 25))
         sns.barplot(data=noun_df, x='count', y='word', ax=axs[0])
