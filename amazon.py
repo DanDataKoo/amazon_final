@@ -158,39 +158,43 @@ def pos_value_count(df_column):
     return noun_df, verb_df, adj_df, adv_df
 
 def word_plot(noun_df, adj_df, adv_df, verb_df):
-    sns.set(font_scale=1.3)
+    sns.set(font_scale=1.5)
     if (len(adv_df) > 0) & (len(adj_df) > 0) & (len(verb_df) > 0):
         fig, axs = plt.subplots(1,4, figsize=(18, 25))
         sns.barplot(data=noun_df, x='count', y='word', ax=axs[0])
         axs[0].set(title='Noun Word Frequency in Reviews', xlabel='Count', ylabel='Noun Words in Reviews')
-        sns.barplot(data=adj_df, x='count', y='word', ax=axs[1])
-        axs[1].set(title='Adjective Word Frequency in Reviews', xlabel='Count', ylabel='Adjective Words in Reviews')
-        sns.barplot(data=adv_df, x='count', y='word', ax=axs[2])
-        axs[2].set(title='Adverb Word Frequency in Reviews', xlabel='Count', ylabel='Adverb Words in Reviews')
-        sns.barplot(data=verb_df, x='count', y='word', ax=axs[3])
-        axs[3].set(title='Verb Word Frequency in Reviews', xlabel='Count', ylabel='Verb Words in Reviews')
+        sns.barplot(data=verb_df, x='count', y='word', ax=axs[1])
+        axs[1].set(title='Verb Word Frequency in Reviews', xlabel='Count', ylabel='Verb Words in Reviews')
+        sns.barplot(data=adj_df, x='count', y='word', ax=axs[2])
+        axs[2].set(title='Adjective Word Frequency in Reviews', xlabel='Count', ylabel='Adjective Words in Reviews')
+        sns.barplot(data=adv_df, x='count', y='word', ax=axs[3])
+        axs[3].set(title='Adverb Word Frequency in Reviews', xlabel='Count', ylabel='Adverb Words in Reviews')
+        
     elif (len(adv_df) > 0) & (len(adj_df) == 0) & (len(verb_df) > 0):
         fig, axs = plt.subplots(1,3, figsize=(18, 25))
         sns.barplot(data=noun_df, x='count', y='word', ax=axs[0])
         axs[0].set(title='Noun Word Frequency in Reviews', xlabel='Count', ylabel='Noun Words in Reviews')
-        sns.barplot(data=adv_df, x='count', y='word', ax=axs[1])
-        axs[1].set(title='Adverb Word Frequency in Reviews', xlabel='Count', ylabel='Adverb Words in Reviews')
-        sns.barplot(data=verb_df, x='count', y='word', ax=axs[2])
-        axs[2].set(title='Verb Word Frequency in Reviews', xlabel='Count', ylabel='Verb Words in Reviews')
+        sns.barplot(data=verb_df, x='count', y='word', ax=axs[1])
+        axs[1].set(title='Verb Word Frequency in Reviews', xlabel='Count', ylabel='Verb Words in Reviews')
+        sns.barplot(data=adv_df, x='count', y='word', ax=axs[2])
+        axs[2].set(title='Adverb Word Frequency in Reviews', xlabel='Count', ylabel='Adverb Words in Reviews')
+        
     elif (len(adv_df) == 0) & (len(adj_df) == 0) & (len(verb_df) > 0):
         fig, axs = plt.subplots(1, 2, figsize=(18, 25))
         sns.barplot(data=noun_df, x='count', y='word', ax=axs[0])
         axs[0].set(title='Noun Word Frequency in Reviews', xlabel='Count', ylabel='Noun Words in Reviews')
         sns.barplot(data=verb_df, x='count', y='word', ax=axs[1])
         axs[1].set(title='Verb Word Frequency in Reviews', xlabel='Count', ylabel='Verb Words in Reviews')
+    
     elif (len(adv_df) == 0) & (len(adj_df) > 0) & (len(verb_df) > 0):
         fig, axs = plt.subplots(1, 3, figsize=(18, 25))
         sns.barplot(data=noun_df, x='count', y='word', ax=axs[0])
         axs[0].set(title='Noun Word Frequency in Reviews', xlabel='Count', ylabel='Noun Words in Reviews')
-        sns.barplot(data=adj_df, x='count', y='word', ax=axs[1])
-        axs[1].set(title='Adjective Word Frequency in Reviews', xlabel='Count', ylabel='Adjective Words in Reviews')
-        sns.barplot(data=verb_df, x='count', y='word', ax=axs[2])
-        axs[2].set(title='Verb Word Frequency in Reviews', xlabel='Count', ylabel='Verb Words in Reviews')
+        sns.barplot(data=verb_df, x='count', y='word', ax=axs[1])
+        axs[1].set(title='Verb Word Frequency in Reviews', xlabel='Count', ylabel='Verb Words in Reviews')
+        sns.barplot(data=adj_df, x='count', y='word', ax=axs[2])
+        axs[2].set(title='Adjective Word Frequency in Reviews', xlabel='Count', ylabel='Adjective Words in Reviews')
+            
     elif (len(adv_df) == 0) & (len(adj_df) == 0) & (len(verb_df) == 0):
         fig, axs = plt.subplots(figsize=(18, 25))
         sns.barplot(data=noun_df, x='count', y='word', ax=axs)
