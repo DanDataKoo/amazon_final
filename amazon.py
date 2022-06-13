@@ -199,22 +199,32 @@ def word_plot(noun_df, adj_df, adv_df, verb_df):
         fig, axs = plt.subplots(figsize=(18, 25))
         sns.barplot(data=noun_df, x='count', y='word', ax=axs)
         axs.set(title='Noun Word Frequency in Reviews', xlabel='Count', ylabel='Noun Words in Reviews')
+    
+    elif (len(noun_df) == 0) & (len(adv_df) == 0) & (len(adj_df) == 0) & (len(verb_df) == 0):
+        pass
+    
     fig.tight_layout()
     return fig
 
 def positive_plot(df):
     w_posi = df.loc[df['sentiment'] == 'positive']
-    # POS tags for each word
-    w_posi['review_pos'] = w_posi['review'].apply(lambda x: pos_spacy(x))
-    noun_df, verb_df, adj_df, adv_df = pos_value_count(w_posi['review_pos'])
-    st.pyplot(word_plot(noun_df, adj_df, adv_df, verb_df))
+    if len(w_posi) == 0:
+        st.write("There is no positive reviews on the product in recent 9 reviews")
+    else:
+        # POS tags for each word
+        w_posi['review_pos'] = w_posi['review'].apply(lambda x: pos_spacy(x))
+        noun_df, verb_df, adj_df, adv_df = pos_value_count(w_posi['review_pos'])
+        st.pyplot(word_plot(noun_df, adj_df, adv_df, verb_df))
 
 def negative_plot(df):
     w_neg = df.loc[df['sentiment'] == 'negative']
-    # POS tags for each word
-    w_neg['review_pos'] = w_neg['review'].apply(lambda x: pos_spacy(x))
-    noun_df, verb_df, adj_df, adv_df = pos_value_count(w_neg['review_pos'])
-    st.pyplot(word_plot(noun_df, adj_df, adv_df, verb_df))
+    if len(w_neg) == 0:
+        st.write("There is no negative reviews on the product in recent 9 reviews")
+    else:
+        # POS tags for each word
+        w_neg['review_pos'] = w_neg['review'].apply(lambda x: pos_spacy(x))
+        noun_df, verb_df, adj_df, adv_df = pos_value_count(w_neg['review_pos'])
+        st.pyplot(word_plot(noun_df, adj_df, adv_df, verb_df))
 
 
 # Streamlit part
