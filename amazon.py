@@ -209,7 +209,7 @@ def word_plot(noun_df, adj_df, adv_df, verb_df):
 def positive_plot(df):
     w_posi = df.loc[df['sentiment'] == 'positive']
     if len(w_posi) == 0:
-        st.write("There is no positive reviews on the product in recent 9 reviews")
+        st.write("There is no positive sentiment on the product in the recent 10 reviews")
     else:
         # POS tags for each word
         w_posi['review_pos'] = w_posi['review'].apply(lambda x: pos_spacy(x))
@@ -219,7 +219,7 @@ def positive_plot(df):
 def negative_plot(df):
     w_neg = df.loc[df['sentiment'] == 'negative']
     if len(w_neg) == 0:
-        st.write("There is no negative reviews on the product in recent 9 reviews")
+        st.write("There is no negative sentiment on the product in the recent 10 reviews")
     else:
         # POS tags for each word
         w_neg['review_pos'] = w_neg['review'].apply(lambda x: pos_spacy(x))
